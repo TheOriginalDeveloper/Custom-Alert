@@ -1,0 +1,82 @@
+(function($) {
+	$.fn.myAlert = function(overlayColor, opacity, width, height, left, top, title, text, buttonText, imageSrc)
+	{
+		parameters = [overlayColor, opacity, width, height, left, top, title, text, buttonText, imageSrc];
+		if(overlayColor != undefined || opacity != undefined || width != undefined || height != undefined || left != undefined || top != undefined || title != undefined || text != undefined || buttonText != undefined || imageSrc != undefined) {
+			$("body").append("<div id=cover></div><div id=myAlert></div>");
+			$("#myAlert").append("<img src=" + imageSrc + "><h2>" + title + "</h2><p>" + text + "</p><button>" + buttonText + "</button>");
+			$("body").css({overflow: "hidden"});
+			$("#myAlert").css({
+				width: width,
+				height: height,
+				position: "fixed",
+				zIndex: 998
+			});
+
+			$("#cover").css({
+				position: "fixed",
+				opacity: opacity,
+				height: window.innerHeight,
+				width: window.innerWidth,
+				background: overlayColor
+			});
+			if(left.length > 0 && top.length > 0) {
+				if(left === top) {
+					var vertical = window.innerHeight / 4;
+
+					// Default position option center
+					var center = function() {
+						var center = window.innerWidth / 2 - ($("#myAlert").outerWidth()) / 2;
+						$("#myAlert").css({
+							left: center,
+							top: vertical
+						});
+					}
+					// Default position option left
+					var left = function() {
+						var left = window.innerWidth / 4 - ($("#myAlert").outerWidth()) / 2;
+						$("#myAlert").css({
+							left: left,
+							top: vertical
+						});
+					}
+					// Default position option right
+					var right = function() {
+						var qauter = window.innerWidth / 4;
+						var right = qauter * 3 + ($("#myAlert").outerWidth()) / 2; 
+						$("#myAlert").css({
+							left: right,
+							top: vertical
+						});
+					}
+					var chosenLeft = eval(left)();
+					var chosenTop = eval(top)();
+				} else {
+					console.error("To use the default positioning please make both perameters are the same.");
+					console.warn(" These need to match " + left + " and " + top);
+				}
+			} else if(typeof left === 'number' && typeof top === 'number') {
+				var percentTop = window.innerHeight / 100 * top;
+				var percentLeft = window.innerWidth / 100 * left;
+				$("#myAlert").css({
+					left: percentLeft,
+					percentTop
+				})
+			} else {
+				console.error("The 5th & 6th parameter must either be, center, left, right if it is a string or a integer that is measured in %.");
+			}
+			$("#myAlert").on("click", function() {
+				$("#cover, #myAlert").hide();
+				$("body").css({overflow: "visible"});
+			})
+		} else {
+			var count = parameters.length;
+			for(var i = 0; i < parameters.length; i++) {
+				if(parameters[i] == undefined) {
+					count--;
+				}
+			}
+			console.error("Only " + count + " parameters out of " + parameters.length + " have been provided.");
+		}
+	}
+})(jQuery)
