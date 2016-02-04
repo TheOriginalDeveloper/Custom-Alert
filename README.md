@@ -1,5 +1,6 @@
 # Custom-Alert
-This jquery plugin allows 100% custom alert styling, including an image, title, description and button
+This jquery plugin allows 100% custom alert styling, including an image, title, description and button. It is also 100%
+responsive.
 
 |=====================| CUSTOM ALERTS! |=====================|
 
